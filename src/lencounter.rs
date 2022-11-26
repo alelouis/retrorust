@@ -22,6 +22,7 @@ impl Lencounter {
         }
     }
     pub fn enable(&mut self) {
+        self.value = self.length;
         self.enabled = true;
     }
 
