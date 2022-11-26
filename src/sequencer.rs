@@ -6,7 +6,7 @@ pub struct Sequencer {
 impl Sequencer {
     pub fn new() -> Self {
         Sequencer {
-            sequence: [1, 1, 1, 1, 1, 1, -1, -1],
+            sequence: [1, 1, 1, 1, -1, -1, -1, -1],
             position: 0,
         }
     }

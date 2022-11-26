@@ -1,26 +1,25 @@
-pub struct Lencounter{
+pub struct Lencounter {
     // runs at CPU frequency clock
     length: u16,
-    value: u16, 
-    enabled: bool
+    value: u16,
+    enabled: bool,
 }
 
 impl Lencounter {
     pub fn new(length: u16) -> Self {
         Lencounter {
             length: length,
-            value: length, 
+            value: length,
             enabled: false,
         }
     }
     pub fn tick(&mut self) {
         if self.enabled {
-            self.value -= 1;    
+            self.value -= 1;
             if self.value == 0 {
                 self.enabled = false;
             }
         }
-
     }
     pub fn enable(&mut self) {
         self.enabled = true;
@@ -35,7 +34,7 @@ impl Lencounter {
 mod tests {
     // this brings everything from parent's scope into this scope
     use super::*;
-    
+
     #[test]
     fn enable_check() {
         let mut length_counter = Lencounter::new(10u16);
