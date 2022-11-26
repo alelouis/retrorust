@@ -22,9 +22,10 @@ fn main() {
     let host = cpal::default_host();
     let device = host.default_output_device().expect("no output device available");
 
-    let sample_rate: cpal::SampleRate = SampleRate{0: 44100 as u32};
-    let buffer_size: cpal::BufferSize = BufferSize::Default;
-    let config: cpal::StreamConfig =  StreamConfig { channels : 1, sample_rate, buffer_size };
+    let sample_rate = SampleRate{0: 44100 as u32};
+    let buffer_size = BufferSize::Default;
+    let channels = 1;
+    let config =  StreamConfig { channels, sample_rate, buffer_size };
     
     let stream = device.build_output_stream(
         &config,
