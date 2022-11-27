@@ -13,6 +13,7 @@ pub struct Pulse {
 }
 
 impl Pulse {
+    // TODO: Increase the clock frequency
     pub fn new(frequency: f32, clock: f32) -> Self {
         let timer_period = (clock / (frequency * 8.)) as u16;
         Pulse {
@@ -20,13 +21,14 @@ impl Pulse {
             lencounter: Lencounter::new(44100u16),
             timer: Timer::new(timer_period),
             sequencer: Sequencer::new(2),
-            envelope: Envelope::new(44100u16/6, true, false),
+            envelope: Envelope::new(44100u16 / 2, true, false),
         }
     }
 
     /// Sets wave frequency
     pub fn set_frequency(&mut self, frequency: f32) {
         let new_period = (self.clock / (frequency * 8.)) as u16;
+        println!("{new_period}");
         self.update_timer_period(new_period);
     }
 

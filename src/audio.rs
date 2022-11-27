@@ -22,23 +22,23 @@ fn setup_stream_config() -> StreamConfig {
 
 fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
     if keys.contains(&Keycode::F6) {
-        pulse.set_frequency(20_f32);
+        pulse.set_frequency(440_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F7) {
-        pulse.set_frequency(40_f32);
+        pulse.set_frequency(466.16_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F8) {
-        pulse.set_frequency(80_f32);
+        pulse.set_frequency(493.88_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F9) {
-        pulse.set_frequency(160_f32);
+        pulse.set_frequency(523.25_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F10) {
-        pulse.set_frequency(320_f32);
+        pulse.set_frequency(554.37_f32);
         pulse.trigger();
     }
 }
@@ -49,7 +49,6 @@ pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
     let config = setup_stream_config();
     let device_state = DeviceState::new();
     let mut prev_keys = vec![];
-    let mut skip = true;
 
     let stream = device
         .build_output_stream(
