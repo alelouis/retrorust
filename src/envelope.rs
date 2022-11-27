@@ -1,14 +1,13 @@
 /// Volume control
 pub struct Envelope {
-    period: u16, // Period of envelop if looping, otherwise its just its length.
-    value: u16, // Current counter value
-    looping: bool, // Loop the envelope
-    enabled: bool, // State flag
+    period: u16,      // Period of envelop if looping, otherwise its just its length.
+    value: u16,       // Current counter value
+    looping: bool,    // Loop the envelope
+    enabled: bool,    // State flag
     increasing: bool, // Increasing or decreasing ramp
 }
 
 impl Envelope {
-
     /// Constructor
     pub fn new(period: u16, looping: bool, increasing: bool) -> Self {
         let value = match increasing {
@@ -25,37 +24,51 @@ impl Envelope {
     }
 
     /// Cycle action
-    /// 
+    ///
     /// If disabled, do nothing.
     /// If enabled, increase of decrease value counter.
     /// Checks bounds and reset if in looping mode, else disable and return.
-    /// 
+    ///
     /// In case of no looping, disabling sets self.value to 0.
     pub fn tick(&mut self) {
+        // Action only on enabled state.
         if self.enabled {
+            // In increase mode.
             if self.increasing {
+                // Counter on top of ramp.
                 if self.value == self.period {
                     self.value = 0;
+
+                    // If not looping, stop here.
                     if !self.looping {
                         self.disable();
                         return;
                     }
                 }
+
+                // Increase counter.
                 self.value += 1;
+
+            // In decrease mode
             } else {
+                // Counter on bottom of ramp.
                 if self.value == 0 {
                     self.value = self.period;
+
+                    // If not looping, stop here.
                     if !self.looping {
                         self.disable();
                         return;
                     }
                 }
+
+                // Decrease counter.
                 self.value -= 1;
             }
         }
     }
 
-    /// Enable envelope, setting value to either 0 
+    /// Enable envelope, setting value to either 0
     /// or period for increasing and decreasing modes.
     pub fn enable(&mut self) {
         self.value = match self.increasing {
