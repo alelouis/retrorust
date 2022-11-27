@@ -14,7 +14,7 @@ use minifb::{Key, Window, WindowOptions};
 use pulse::Pulse;
 use std::sync::mpsc::channel;
 
-const WIDTH: usize = 512;
+const WIDTH: usize = 256;
 const HEIGHT: usize = 100;
 
 fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
@@ -25,7 +25,7 @@ fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
 fn main() {
     // Graphics
     let mut window = Window::new(
-        "Test - ESC to exit",
+        "Retrorust",
         WIDTH,
         HEIGHT,
         WindowOptions::default(),
@@ -65,15 +65,15 @@ fn main() {
         for i in 0..4 * WIDTH {
             buffer_phase[i] = rx.recv().unwrap();
             if i > WIDTH && i < 3 * WIDTH {
-                if buffer_phase[i + 1] > buffer_phase[i] {
+                if buffer_phase[i + 1] < buffer_phase[i] {
                     start_index = i;
                 }
             }
         }
 
         for column in 0..WIDTH {
-            let index = (column as f32 + start_index as f32) - WIDTH as f32;
-            waveform[column] = buffer_phase[column + index as usize];
+            let index = (column as f32 + start_index as f32) - (WIDTH/2) as f32;
+            waveform[column] = buffer_phase[index as usize];
         }
 
         for c in 0..WIDTH {
