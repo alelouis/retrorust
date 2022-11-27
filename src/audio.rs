@@ -1,8 +1,8 @@
+use crate::pulse::Pulse;
 use cpal::traits::{DeviceTrait, HostTrait};
 use cpal::{BufferSize, Device, Sample, SampleRate, Stream, StreamConfig};
 use device_query::{DeviceQuery, DeviceState, Keycode};
 use std::sync::mpsc::Sender;
-use crate::pulse::Pulse;
 
 /// Setup default device for audio stream
 fn setup_device() -> Device {
@@ -21,12 +21,24 @@ fn setup_stream_config() -> StreamConfig {
 }
 
 fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
-    if keys.contains(&Keycode::Up) {
-        pulse.set_frequency(220_f32);
+    if keys.contains(&Keycode::F6) {
+        pulse.set_frequency(330_f32);
         pulse.trigger();
     }
-    if keys.contains(&Keycode::Down) {
-        pulse.set_frequency(330_f32);
+    if keys.contains(&Keycode::F7) {
+        pulse.set_frequency(440_f32);
+        pulse.trigger();
+    }
+    if keys.contains(&Keycode::F8) {
+        pulse.set_frequency(550_f32);
+        pulse.trigger();
+    }
+    if keys.contains(&Keycode::F9) {
+        pulse.set_frequency(660_f32);
+        pulse.trigger();
+    }
+    if keys.contains(&Keycode::F10) {
+        pulse.set_frequency(770_f32);
         pulse.trigger();
     }
 }
@@ -42,7 +54,6 @@ pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
         .build_output_stream(
             &config,
             move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
-
                 // Keys triggering
                 let keys = device_state.get_keys();
                 if keys != prev_keys {
