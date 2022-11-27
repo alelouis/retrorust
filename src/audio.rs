@@ -22,23 +22,23 @@ fn setup_stream_config() -> StreamConfig {
 
 fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
     if keys.contains(&Keycode::F6) {
-        pulse.set_frequency(330_f32);
+        pulse.set_frequency(20_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F7) {
-        pulse.set_frequency(440_f32);
+        pulse.set_frequency(40_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F8) {
-        pulse.set_frequency(550_f32);
+        pulse.set_frequency(80_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F9) {
-        pulse.set_frequency(660_f32);
+        pulse.set_frequency(160_f32);
         pulse.trigger();
     }
     if keys.contains(&Keycode::F10) {
-        pulse.set_frequency(770_f32);
+        pulse.set_frequency(320_f32);
         pulse.trigger();
     }
 }
@@ -49,6 +49,7 @@ pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
     let config = setup_stream_config();
     let device_state = DeviceState::new();
     let mut prev_keys = vec![];
+    let mut skip = true;
 
     let stream = device
         .build_output_stream(
@@ -66,7 +67,7 @@ pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
                     pulse.tick();
                     let norm_value = (pulse.get_value() as f32) / 16.;
                     tx.send(norm_value).unwrap();
-                    let value: f32 = 0.00 * norm_value;
+                    let value: f32 = 0.1 * norm_value;
                     *sample = Sample::from(&value);
                 }
             },

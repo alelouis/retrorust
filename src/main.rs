@@ -46,9 +46,8 @@ fn main() {
     stream.play().unwrap();
 
     let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
-    window.limit_update_rate(Some(std::time::Duration::from_micros(100)));
+    window.limit_update_rate(Some(std::time::Duration::from_micros(16600)));
 
-    let mut waveform: Vec<f32> = vec![0.; WIDTH];
     while window.is_open() && !window.is_key_down(Key::Escape) {
         let mut buffer_mat: Vec<Vec<u32>> = vec![vec![0; HEIGHT]; WIDTH];
 
@@ -60,26 +59,22 @@ fn main() {
         }
 
         let mut start_index = 0;
-        let mut buffer_phase: [f32; 4 * WIDTH] = [0.; 4 * WIDTH];
+        let mut buffer_phase: [f32; 2 * WIDTH] = [0.; 2 * WIDTH];
 
-        for i in 0..4 * WIDTH {
+        for i in 0..2 * WIDTH {
             buffer_phase[i] = rx.recv().unwrap();
-            if i > WIDTH && i < 3 * WIDTH {
-                if buffer_phase[i + 1] < buffer_phase[i] {
+            if i > (0.5*WIDTH as f32) as usize && i < (1.5 * WIDTH as f32) as usize {
+                if buffer_phase[i] > buffer_phase[i-1] {
                     start_index = i;
                 }
             }
         }
 
-        for column in 0..WIDTH {
-            let index = (column as f32 + start_index as f32) - (WIDTH/2) as f32;
-            waveform[column] = buffer_phase[index as usize];
-        }
-
         for c in 0..WIDTH {
-            let row = (((waveform[c] + 1.) / 2.) * (HEIGHT - 5) as f32) as usize;
+            let index = (c as f32 + start_index as f32) - (WIDTH/2) as f32;
+            let row = HEIGHT-(((buffer_phase[index as usize] + 1.) / 2.) * (HEIGHT - 1) as f32) as usize;
             if c > 1 {
-                let prev_row = (((waveform[c - 1] + 1.) / 2.) * (HEIGHT - 5) as f32) as usize;
+                let prev_row = HEIGHT-(((buffer_phase[(index-1.) as usize] + 1.) / 2.) * (HEIGHT - 1) as f32) as usize;
                 let row_min = std::cmp::min(row, prev_row);
                 let row_max = std::cmp::max(row, prev_row);
                 for row_i in row_min..=row_max {

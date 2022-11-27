@@ -20,7 +20,7 @@ impl Pulse {
             lencounter: Lencounter::new(44100u16),
             timer: Timer::new(timer_period),
             sequencer: Sequencer::new(2),
-            envelope: Envelope::new(44100u16, true, false),
+            envelope: Envelope::new(44100u16/6, true, false),
         }
     }
 

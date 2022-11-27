@@ -22,7 +22,7 @@ impl Sequence {
         let mut samples = [1, 1, 1, 1, 1, 1, 1, 1];
         if (1..=7).contains(&duty) {
             for i in 0..duty {
-                samples[i as usize] *= -1;
+                samples[i as usize] = -1;
             }
             Some(Sequence { samples })
         } else {
