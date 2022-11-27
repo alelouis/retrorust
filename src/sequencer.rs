@@ -1,13 +1,16 @@
+/// Sequencer unit
 pub struct Sequencer {
     sequence: Sequence,
     position: usize,
 }
 
+/// Sequence type, to be used by Sequencer
 pub struct Sequence {
     samples: [i8; 8],
 }
 
 impl Sequence {
+    /// Returns samples from the sequence
     pub fn get_samples(&self) -> [i8; 8] {
         self.samples
     }
@@ -15,7 +18,7 @@ impl Sequence {
     // Return varying duty cycle sequences for duty between 1 and 7.
     pub fn get_sequence_from_duty(duty: i8) -> Option<Sequence> {
         let mut samples = [1, 1, 1, 1, 1, 1, 1, 1];
-        if (duty >= 1) & (duty <= 7) {
+        if (1..=7).contains(&duty) {
             for i in 0..duty {
                 samples[i as usize] *= -1;
             }

@@ -1,3 +1,4 @@
+/// Timer unit
 pub struct Timer {
     // runs at CPU frequency clock
     period: u16,
@@ -5,12 +6,17 @@ pub struct Timer {
 }
 
 impl Timer {
+    /// Constructor
     pub fn new(period: u16) -> Self {
         Timer {
             period,
             value: period,
         }
     }
+
+    /// Cycle action
+    ///
+    /// Timer is a decreasing sawtooth that resets in infinite loop.
     pub fn tick(&mut self) {
         // Goes from self.period -1 to 0, so self.period ticks.
         if self.value == 0 {
@@ -18,6 +24,8 @@ impl Timer {
         }
         self.value -= 1;
     }
+
+    /// Returns current counter value
     pub fn get_value(&self) -> u16 {
         self.value
     }

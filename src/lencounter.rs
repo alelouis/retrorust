@@ -1,3 +1,7 @@
+/// Lencounter
+///
+/// Use to silence channel after a given amount of time.
+/// Redundant with envelop if not looping and length < envelop period
 pub struct Lencounter {
     // runs at CPU frequency clock
     length: u16,
@@ -6,6 +10,7 @@ pub struct Lencounter {
 }
 
 impl Lencounter {
+    /// Constructor
     pub fn new(length: u16) -> Self {
         Lencounter {
             length,
@@ -13,19 +18,29 @@ impl Lencounter {
             enabled: false,
         }
     }
+
+    /// Cycle action
     pub fn tick(&mut self) {
+        // Only on enabled state.
         if self.enabled {
+            // Decrease value.
             self.value -= 1;
+
+            // On bottom of ramp, disable unit.
             if self.value == 0 {
                 self.enabled = false;
             }
         }
     }
+
+    /// Enables unit
+    /// Set value to total length and set enable flag to true
     pub fn enable(&mut self) {
         self.value = self.length;
         self.enabled = true;
     }
 
+    /// Returns enabled states
     pub fn is_enabled(&self) -> bool {
         self.enabled
     }
