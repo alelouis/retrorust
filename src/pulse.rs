@@ -1,13 +1,13 @@
+use crate::envelope::Envelope;
 use crate::lencounter::Lencounter;
 use crate::sequencer::Sequencer;
 use crate::timer::Timer;
-use crate::envelope::Envelope;
 
 pub struct Pulse {
     lencounter: Lencounter,
     timer: Timer,
     sequencer: Sequencer,
-    envelope: Envelope
+    envelope: Envelope,
 }
 
 impl Pulse {
@@ -16,8 +16,8 @@ impl Pulse {
         Pulse {
             lencounter: Lencounter::new(44100u16),
             timer: Timer::new(timer_period),
-            sequencer: Sequencer::new(),
-            envelope: Envelope::new(44100u16 / 4, false, false)
+            sequencer: Sequencer::new(4),
+            envelope: Envelope::new(44100u16 / 4, true, false),
         }
     }
     pub fn tick(&mut self) {
@@ -34,11 +34,9 @@ impl Pulse {
             true => {
                 let volume = self.envelope.get_value() as f32 / self.envelope.get_period() as f32;
                 let sample = self.sequencer.get_sample() as f32;
-                (16. * (volume*sample)) as i8
+                (16. * (volume * sample)) as i8
             }
-            false => {
-                1
-            }
+            false => 1,
         }
     }
 
