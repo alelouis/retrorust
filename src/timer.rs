@@ -7,7 +7,7 @@ pub struct Timer {
 impl Timer {
     pub fn new(period: u16) -> Self {
         Timer {
-            period: period,
+            period,
             value: period,
         }
     }
