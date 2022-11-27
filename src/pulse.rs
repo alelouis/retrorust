@@ -8,18 +8,35 @@ pub struct Pulse {
     timer: Timer,
     sequencer: Sequencer,
     envelope: Envelope,
+    clock: f32,
 }
 
 impl Pulse {
     pub fn new(frequency: f32, clock: f32) -> Self {
         let timer_period = (clock / (frequency * 8.)) as u16;
         Pulse {
+            clock,
             lencounter: Lencounter::new(44100u16),
             timer: Timer::new(timer_period),
             sequencer: Sequencer::new(4),
             envelope: Envelope::new(44100u16 / 4, true, false),
         }
     }
+
+    /// Sets wave frequency
+    pub fn set_frequency(&mut self, frequency: f32) {
+        let new_period = (self.clock / (frequency * 8.)) as u16;
+        self.update_timer_period(new_period);
+    }
+
+    /// Updates internal timer period
+    fn update_timer_period(&mut self, period: u16) {
+        self.timer.set_period(period);
+    }
+
+    /// Cycle action
+    /// 
+    /// Ticks all internal units
     pub fn tick(&mut self) {
         self.timer.tick();
         self.lencounter.tick();
@@ -29,6 +46,7 @@ impl Pulse {
         }
     }
 
+    /// Compute output value of Pulse unit
     pub fn get_value(&self) -> i8 {
         match self.lencounter.is_enabled() {
             true => {
@@ -40,6 +58,7 @@ impl Pulse {
         }
     }
 
+    /// Trigger length counter and envelope units
     pub fn trigger(&mut self) {
         self.lencounter.enable();
         self.envelope.enable();

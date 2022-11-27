@@ -22,8 +22,12 @@ fn setup_stream_config() -> StreamConfig {
 
 fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
     if keys.contains(&Keycode::Up) {
+        pulse.set_frequency(220_f32);
         pulse.trigger();
-        println!("Triggering");
+    }
+    if keys.contains(&Keycode::Down) {
+        pulse.set_frequency(330_f32);
+        pulse.trigger();
     }
 }
 

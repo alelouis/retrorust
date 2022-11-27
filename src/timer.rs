@@ -25,6 +25,12 @@ impl Timer {
         self.value -= 1;
     }
 
+    /// Sets new periods and resets value
+    pub fn set_period(&mut self, period: u16) {
+        self.period = period;
+        self.value = period;
+    }
+
     /// Returns current counter value
     pub fn get_value(&self) -> u16 {
         self.value
