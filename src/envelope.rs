@@ -33,12 +33,10 @@ impl Envelope {
                 self.value += 1;
             } else {
                 if self.value == 0 {
+                    self.value = self.period;
                     if !self.looping {
-                        self.value = 0;
                         self.disable();
                         return
-                    } else {
-                        self.value = self.period;
                     }
                 }
                 self.value -= 1;
@@ -53,6 +51,7 @@ impl Envelope {
         self.enabled = true;
     }
     pub fn disable(&mut self) {
+        self.value = 0;
         self.enabled = false;
     }
     pub fn get_value(&self) -> u16 {
