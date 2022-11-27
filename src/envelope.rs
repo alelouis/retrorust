@@ -10,14 +10,14 @@ impl Envelope {
     pub fn new(period: u16, looping: bool, increasing: bool) -> Self {
         let value = match increasing {
             true => 0,
-            false => period
+            false => period,
         };
         Envelope {
             period,
-            value: value,
+            value,
             looping,
             enabled: false,
-            increasing
+            increasing,
         }
     }
     pub fn tick(&mut self) {
@@ -27,7 +27,7 @@ impl Envelope {
                     self.value = 0;
                     if !self.looping {
                         self.disable();
-                        return
+                        return;
                     }
                 }
                 self.value += 1;
@@ -36,7 +36,7 @@ impl Envelope {
                     self.value = self.period;
                     if !self.looping {
                         self.disable();
-                        return
+                        return;
                     }
                 }
                 self.value -= 1;
@@ -46,7 +46,7 @@ impl Envelope {
     pub fn enable(&mut self) {
         self.value = match self.increasing {
             true => 0,
-            false => self.period
+            false => self.period,
         };
         self.enabled = true;
     }
@@ -58,6 +58,6 @@ impl Envelope {
         self.value
     }
     pub fn get_period(&self) -> u16 {
-        return self.period;
+        self.period
     }
 }

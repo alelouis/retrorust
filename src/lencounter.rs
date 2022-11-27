@@ -8,7 +8,7 @@ pub struct Lencounter {
 impl Lencounter {
     pub fn new(length: u16) -> Self {
         Lencounter {
-            length: length,
+            length,
             value: length,
             enabled: false,
         }
@@ -27,7 +27,7 @@ impl Lencounter {
     }
 
     pub fn is_enabled(&self) -> bool {
-        return self.enabled;
+        self.enabled
     }
 }
 
