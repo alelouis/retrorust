@@ -1,4 +1,5 @@
 /// Volume control
+#[derive(Debug, Copy, Clone)]
 pub struct Envelope {
     period: u16,      // Period of envelop if looping, otherwise its just its length.
     value: u16,       // Current counter value

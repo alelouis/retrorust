@@ -1,10 +1,12 @@
 /// Sequencer unit
+#[derive(Debug, Copy, Clone)]
 pub struct Sequencer {
     sequence: Sequence,
     position: usize,
 }
 
 /// Sequence type, to be used by Sequencer
+#[derive(Debug, Copy, Clone)]
 pub struct Sequence {
     samples: [i8; 8],
 }

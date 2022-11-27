@@ -1,7 +1,7 @@
 use cpal::traits::{DeviceTrait, HostTrait};
 use cpal::{BufferSize, Device, Sample, SampleRate, Stream, StreamConfig};
 use device_query::{DeviceQuery, DeviceState, Keycode};
-
+use std::sync::mpsc::Sender;
 use crate::pulse::Pulse;
 
 /// Setup default device for audio stream
@@ -32,11 +32,12 @@ fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
 }
 
 /// Build stream object
-pub fn stream(mut pulse: Pulse) -> Stream {
+pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
     let device = setup_device();
     let config = setup_stream_config();
     let device_state = DeviceState::new();
     let mut prev_keys = vec![];
+
     let stream = device
         .build_output_stream(
             &config,
@@ -52,7 +53,9 @@ pub fn stream(mut pulse: Pulse) -> Stream {
                 // Buffer filling
                 for sample in data.iter_mut() {
                     pulse.tick();
-                    let value: f32 = 0.05 * (pulse.get_value() as f32) / 16.;
+                    let norm_value = (pulse.get_value() as f32) / 16.;
+                    tx.send(norm_value).unwrap();
+                    let value: f32 = 0.05 * norm_value;
                     *sample = Sample::from(&value);
                 }
             },

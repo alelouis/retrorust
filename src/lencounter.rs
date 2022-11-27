@@ -2,6 +2,8 @@
 ///
 /// Use to silence channel after a given amount of time.
 /// Redundant with envelop if not looping and length < envelop period
+
+#[derive(Debug, Copy, Clone)]
 pub struct Lencounter {
     // runs at CPU frequency clock
     length: u16,

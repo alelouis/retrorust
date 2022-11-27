@@ -3,6 +3,7 @@ use crate::lencounter::Lencounter;
 use crate::sequencer::Sequencer;
 use crate::timer::Timer;
 
+#[derive(Debug, Copy, Clone)]
 pub struct Pulse {
     lencounter: Lencounter,
     timer: Timer,
@@ -18,8 +19,8 @@ impl Pulse {
             clock,
             lencounter: Lencounter::new(44100u16),
             timer: Timer::new(timer_period),
-            sequencer: Sequencer::new(4),
-            envelope: Envelope::new(44100u16 / 4, true, false),
+            sequencer: Sequencer::new(2),
+            envelope: Envelope::new(44100u16, true, false),
         }
     }
 
@@ -35,7 +36,7 @@ impl Pulse {
     }
 
     /// Cycle action
-    /// 
+    ///
     /// Ticks all internal units
     pub fn tick(&mut self) {
         self.timer.tick();

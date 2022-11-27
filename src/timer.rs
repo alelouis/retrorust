@@ -1,4 +1,5 @@
 /// Timer unit
+#[derive(Debug, Copy, Clone)]
 pub struct Timer {
     // runs at CPU frequency clock
     period: u16,
