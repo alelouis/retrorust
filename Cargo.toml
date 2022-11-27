@@ -8,5 +8,4 @@ edition = "2021"
 [dependencies]
 csv = "1.1"
 cpal = "0.14.1"
-anyhow = "1.0.66"
-clap = "4.0.27"
+device_query = "1.1.1"

@@ -1,5 +1,6 @@
 use cpal::traits::{DeviceTrait, HostTrait};
 use cpal::{BufferSize, Device, Sample, SampleRate, Stream, StreamConfig};
+use device_query::{DeviceQuery, DeviceState, Keycode};
 
 use crate::pulse::Pulse;
 
@@ -19,20 +20,35 @@ fn setup_stream_config() -> StreamConfig {
     }
 }
 
+fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
+    if keys.contains(&Keycode::Up) {
+        pulse.trigger();
+        println!("Triggering");
+    }
+}
+
 /// Build stream object
 pub fn stream(mut pulse: Pulse) -> Stream {
     let device = setup_device();
     let config = setup_stream_config();
+    let device_state = DeviceState::new();
+    let mut prev_keys = vec![];
     let stream = device
         .build_output_stream(
             &config,
             move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
+
+                // Keys triggering
+                let keys = device_state.get_keys();
+                if keys != prev_keys {
+                    react_on_key(&keys, &mut pulse)
+                }
+                prev_keys = keys;
+
+                // Buffer filling
                 for sample in data.iter_mut() {
                     pulse.tick();
                     let value: f32 = 0.05 * (pulse.get_value() as f32) / 16.;
-                    if value.abs() > 1. {
-                        panic!("Amplitude out of bounds.")
-                    }
                     *sample = Sample::from(&value);
                 }
             },
