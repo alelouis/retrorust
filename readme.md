@@ -5,7 +5,7 @@ Mini retro-vibe monophonic synthesizer.
 
 Generates audio PWM square waves using [NES APU-like](https://www.nesdev.org/wiki/APU) implementation and visualize resulting waveform in real-time.
 
-
+https://user-images.githubusercontent.com/6841652/205342698-4e292fd3-3663-4e95-b6ab-5192d580bb4f.mov
 
 ## **How to use**
 Clone the repository.
