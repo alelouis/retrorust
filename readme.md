@@ -5,6 +5,8 @@ Mini retro-vibe monophonic synthesizer.
 
 Generates audio PWM square waves using [NES APU-like](https://www.nesdev.org/wiki/APU) implementation and visualize resulting waveform in real-time.
 
+https://user-images.githubusercontent.com/6841652/205342698-4e292fd3-3663-4e95-b6ab-5192d580bb4f.mov
+
 ## **Implementation**
 Main components used to generate a Pulse channel are:
 - `envelope.rs` : Manages volume envelope in increasing and decreasing fashion as well as looping.
@@ -31,8 +33,3 @@ cargo run --bin main
 ## **How to use**
 For now, keys **F6 to F10** are mapped from A440 to C#554.37.  
 Mapping can be modified in `src/audio.rs` inside `react_on_keys()` function.
-
-## **Dependencies**
-`cpal = "0.14.1"` - for audio  
-`device_query = "1.1.1"` - for input handling  
-`minifb = "0.23"` - for window buffer drawing
