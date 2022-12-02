@@ -63,8 +63,11 @@ pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
 
                 // Buffer filling
                 for sample in data.iter_mut() {
-                    pulse.tick();
-                    let norm_value = (pulse.get_value() as f32) / 16.;
+                    for _ in 0..16 {
+                        pulse.tick();
+                    }
+                    
+                    let norm_value = pulse.get_value();
                     tx.send(norm_value).unwrap();
                     let value: f32 = 0.1 * norm_value;
                     *sample = Sample::from(&value);

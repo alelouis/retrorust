@@ -6,14 +6,14 @@
 #[derive(Debug, Copy, Clone)]
 pub struct Lencounter {
     // runs at CPU frequency clock
-    length: u16,
-    value: u16,
+    length: u32,
+    value: u32,
     enabled: bool,
 }
 
 impl Lencounter {
     /// Constructor
-    pub fn new(length: u16) -> Self {
+    pub fn new(length: u32) -> Self {
         Lencounter {
             length,
             value: length,
@@ -55,14 +55,14 @@ mod tests {
 
     #[test]
     fn enable_check() {
-        let mut length_counter = Lencounter::new(10u16);
+        let mut length_counter = Lencounter::new(10u32);
         length_counter.enable();
         assert_eq!(length_counter.is_enabled(), true);
     }
 
     #[test]
     fn disable_check() {
-        let mut length_counter = Lencounter::new(10u16);
+        let mut length_counter = Lencounter::new(10u32);
         length_counter.enable();
         for _ in 0..10 {
             length_counter.tick()

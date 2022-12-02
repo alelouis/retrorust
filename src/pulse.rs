@@ -18,17 +18,16 @@ impl Pulse {
         let timer_period = (clock / (frequency * 8.)) as u16;
         Pulse {
             clock,
-            lencounter: Lencounter::new(44100u16),
+            lencounter: Lencounter::new(clock as u32),
             timer: Timer::new(timer_period),
-            sequencer: Sequencer::new(2),
-            envelope: Envelope::new(44100u16 / 2, true, false),
+            sequencer: Sequencer::new(3),
+            envelope: Envelope::new(clock as u32, true, false),
         }
     }
 
     /// Sets wave frequency
     pub fn set_frequency(&mut self, frequency: f32) {
         let new_period = (self.clock / (frequency * 8.)) as u16;
-        println!("{new_period}");
         self.update_timer_period(new_period);
     }
 
@@ -50,14 +49,14 @@ impl Pulse {
     }
 
     /// Compute output value of Pulse unit
-    pub fn get_value(&self) -> i8 {
+    pub fn get_value(&self) -> f32 {
         match self.lencounter.is_enabled() {
             true => {
                 let volume = self.envelope.get_value() as f32 / self.envelope.get_period() as f32;
                 let sample = self.sequencer.get_sample() as f32;
-                (16. * (volume * sample)) as i8
+                volume * sample
             }
-            false => 1,
+            false => 0_f32,
         }
     }
 

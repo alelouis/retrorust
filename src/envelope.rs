@@ -1,8 +1,8 @@
 /// Volume control
 #[derive(Debug, Copy, Clone)]
 pub struct Envelope {
-    period: u16,      // Period of envelop if looping, otherwise its just its length.
-    value: u16,       // Current counter value
+    period: u32,      // Period of envelop if looping, otherwise its just its length.
+    value: u32,       // Current counter value
     looping: bool,    // Loop the envelope
     enabled: bool,    // State flag
     increasing: bool, // Increasing or decreasing ramp
@@ -10,7 +10,7 @@ pub struct Envelope {
 
 impl Envelope {
     /// Constructor
-    pub fn new(period: u16, looping: bool, increasing: bool) -> Self {
+    pub fn new(period: u32, looping: bool, increasing: bool) -> Self {
         let value = match increasing {
             true => 0,
             false => period,
@@ -86,12 +86,12 @@ impl Envelope {
     }
 
     /// Returns current value (0 if disables or ramp value otherwise).
-    pub fn get_value(&self) -> u16 {
+    pub fn get_value(&self) -> u32 {
         self.value
     }
 
     /// Returns envelop period
-    pub fn get_period(&self) -> u16 {
+    pub fn get_period(&self) -> u32 {
         self.period
     }
 }
