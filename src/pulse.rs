@@ -1,6 +1,7 @@
 use crate::envelope::Envelope;
 use crate::lencounter::Lencounter;
 use crate::sequencer::Sequencer;
+use crate::ticker::Ticker;
 use crate::timer::Timer;
 
 #[derive(Debug, Copy, Clone)]
@@ -35,6 +36,7 @@ impl Pulse {
     fn update_timer_period(&mut self, period: u16) {
         self.timer.set_period(period);
     }
+
 
     /// Cycle action
     ///

@@ -1,3 +1,4 @@
+use crate::ticker::Ticker;
 /// Sequencer unit
 #[derive(Debug, Copy, Clone)]
 pub struct Sequencer {
@@ -45,14 +46,6 @@ impl Sequencer {
         }
     }
 
-    /// Clock cycle action
-    pub fn tick(&mut self) {
-        self.position += 1;
-        if self.position == 8 {
-            self.position = 0;
-        }
-    }
-
     /// Get sample for given sequence position
     pub fn get_position(&self) -> usize {
         self.position
@@ -61,5 +54,14 @@ impl Sequencer {
     /// Get sample for given sequence position
     pub fn get_sample(&self) -> i8 {
         self.sequence.get_samples()[self.position]
+    }
+}
+
+impl Ticker for Sequencer {
+    fn tick(&mut self) {
+        self.position += 1;
+        if self.position == 8 {
+            self.position = 0;
+        }
     }
 }

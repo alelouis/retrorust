@@ -1,3 +1,5 @@
+use crate::ticker::Ticker;
+
 /// Volume control
 #[derive(Debug, Copy, Clone)]
 pub struct Envelope {
@@ -31,7 +33,35 @@ impl Envelope {
     /// Checks bounds and reset if in looping mode, else disable and return.
     ///
     /// In case of no looping, disabling sets self.value to 0.
-    pub fn tick(&mut self) {
+    /// Enable envelope, setting value to either 0
+    /// or period for increasing and decreasing modes.
+    pub fn enable(&mut self) {
+        self.value = match self.increasing {
+            true => 0,
+            false => self.period,
+        };
+        self.enabled = true;
+    }
+
+    /// Disable envelope, returns 0 volume.
+    pub fn disable(&mut self) {
+        self.value = 0;
+        self.enabled = false;
+    }
+
+    /// Returns current value (0 if disables or ramp value otherwise).
+    pub fn get_value(&self) -> u32 {
+        self.value
+    }
+
+    /// Returns envelop period
+    pub fn get_period(&self) -> u32 {
+        self.period
+    }
+}
+
+impl Ticker for Envelope {
+    fn tick(&mut self) {
         // Action only on enabled state.
         if self.enabled {
             // In increase mode.
@@ -67,31 +97,5 @@ impl Envelope {
                 self.value -= 1;
             }
         }
-    }
-
-    /// Enable envelope, setting value to either 0
-    /// or period for increasing and decreasing modes.
-    pub fn enable(&mut self) {
-        self.value = match self.increasing {
-            true => 0,
-            false => self.period,
-        };
-        self.enabled = true;
-    }
-
-    /// Disable envelope, returns 0 volume.
-    pub fn disable(&mut self) {
-        self.value = 0;
-        self.enabled = false;
-    }
-
-    /// Returns current value (0 if disables or ramp value otherwise).
-    pub fn get_value(&self) -> u32 {
-        self.value
-    }
-
-    /// Returns envelop period
-    pub fn get_period(&self) -> u32 {
-        self.period
     }
 }

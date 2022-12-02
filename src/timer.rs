@@ -1,3 +1,5 @@
+use crate::ticker::Ticker;
+
 /// Timer unit
 #[derive(Debug, Copy, Clone)]
 pub struct Timer {
@@ -15,17 +17,6 @@ impl Timer {
         }
     }
 
-    /// Cycle action
-    ///
-    /// Timer is a decreasing sawtooth that resets in infinite loop.
-    pub fn tick(&mut self) {
-        // Goes from self.period -1 to 0, so self.period ticks.
-        if self.value == 0 {
-            self.value = self.period;
-        }
-        self.value -= 1;
-    }
-
     /// Sets new periods and resets value
     pub fn set_period(&mut self, period: u16) {
         self.period = period;
@@ -35,6 +26,16 @@ impl Timer {
     /// Returns current counter value
     pub fn get_value(&self) -> u16 {
         self.value
+    }
+}
+
+impl Ticker for Timer {
+    fn tick(&mut self) {
+        // Goes from self.period -1 to 0, so self.period ticks.
+        if self.value == 0 {
+            self.value = self.period;
+        }
+        self.value -= 1;
     }
 }
 

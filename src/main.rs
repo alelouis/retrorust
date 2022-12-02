@@ -6,6 +6,7 @@ mod envelope;
 mod lencounter;
 mod pulse;
 mod sequencer;
+mod ticker;
 mod timer;
 
 use cpal::traits::StreamTrait;
