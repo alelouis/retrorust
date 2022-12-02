@@ -66,7 +66,7 @@ pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
                     for _ in 0..16 {
                         pulse.tick();
                     }
-                    
+
                     let norm_value = pulse.get_value();
                     tx.send(norm_value).unwrap();
                     let value: f32 = 0.1 * norm_value;

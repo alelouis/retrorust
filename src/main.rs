@@ -2,7 +2,6 @@
 #![allow(unused_variables)]
 
 mod audio;
-mod csv_rw;
 mod envelope;
 mod lencounter;
 mod pulse;
@@ -31,7 +30,7 @@ fn main() {
 
     // Synthesizer
     let multiplier = 16_f32;
-    let clock = multiplier*44100_f32;
+    let clock = multiplier * 44100_f32;
     let frequency = 440_f32;
     let pulse: Pulse = Pulse::new(frequency, clock);
 
@@ -66,18 +65,16 @@ fn main() {
             }
         }
 
-        
-
         for c in 0..WIDTH {
             let index = (c as f32 + start_index as f32) - (WIDTH / 2) as f32;
             let mut row = HEIGHT
                 - (((buffer_phase[index as usize] + 1.) / 2.) * (HEIGHT - 1) as f32) as usize;
-            row = std::cmp::min(row, HEIGHT-1);
+            row = std::cmp::min(row, HEIGHT - 1);
             if c > 1 {
                 let mut prev_row = HEIGHT
                     - (((buffer_phase[(index - 1.) as usize] + 1.) / 2.) * (HEIGHT - 1) as f32)
                         as usize;
-                prev_row = std::cmp::min(prev_row, HEIGHT-1);
+                prev_row = std::cmp::min(prev_row, HEIGHT - 1);
                 let row_min = std::cmp::min(row, prev_row);
                 let row_max = std::cmp::max(row, prev_row);
                 for row_i in row_min..=row_max {

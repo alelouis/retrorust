@@ -12,9 +12,5 @@ device_query = "1.1.1"
 minifb = "0.23"
 
 [[bin]]
-name = "buffer"
-path = "./src/buffer.rs"
-
-[[bin]]
 name = "main"
 path = "./src/main.rs"
