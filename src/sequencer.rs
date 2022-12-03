@@ -9,37 +9,40 @@ pub struct Sequencer {
 /// Sequence type, to be used by Sequencer
 #[derive(Debug, Copy, Clone)]
 pub struct Sequence {
-    samples: [i8; 8],
+    samples: [f32; 16],
 }
 
 impl Sequence {
     /// Returns samples from the sequence
-    pub fn get_samples(&self) -> [i8; 8] {
+    pub fn get_samples(&self) -> [f32; 16] {
         self.samples
     }
 
     // Return varying duty cycle sequences for duty between 1 and 7.
-    pub fn get_sequence_from_duty(duty: i8) -> Option<Sequence> {
-        let mut samples = [1, 1, 1, 1, 1, 1, 1, 1];
-        if (1..=7).contains(&duty) {
+    pub fn get_square_sequence_from_duty(duty: i8) -> Option<Sequence> {
+        let mut samples = [1.0; 16];
+        if (1..=15).contains(&duty) {
             for i in 0..duty {
-                samples[i as usize] = -1;
+                samples[i as usize] = -1.0;
             }
             Some(Sequence { samples })
         } else {
             None
         }
     }
+
+    // Return triangle sequence.
+    pub fn get_triangle_sequence() -> Sequence {
+        let mut triangle = [0., 1., 2., 3., 4., 3., 2., 1., 0., -1., -2., -3., -4., -3., -2., -1.];
+        for v in triangle.iter_mut() {
+            *v = *v / 4.
+        }
+        Sequence { samples : triangle}
+    }
 }
 
 impl Sequencer {
-    pub fn new(duty: i8) -> Self {
-        let sequence = match Sequence::get_sequence_from_duty(duty) {
-            Some(s) => s,
-            None => Sequence {
-                samples: [-1, -1, -1, -1, 1, 1, 1, 1],
-            },
-        };
+    pub fn new(sequence: Sequence) -> Self {
         Sequencer {
             sequence,
             position: 0,
@@ -52,7 +55,7 @@ impl Sequencer {
     }
 
     /// Get sample for given sequence position
-    pub fn get_sample(&self) -> i8 {
+    pub fn get_sample(&self) -> f32 {
         self.sequence.get_samples()[self.position]
     }
 }
@@ -60,7 +63,7 @@ impl Sequencer {
 impl Ticker for Sequencer {
     fn tick(&mut self) {
         self.position += 1;
-        if self.position == 8 {
+        if self.position == 16 {
             self.position = 0;
         }
     }

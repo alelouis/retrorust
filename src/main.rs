@@ -14,7 +14,7 @@ use minifb::{Key, Window, WindowOptions};
 use pulse::Pulse;
 use std::sync::mpsc::channel;
 
-const WIDTH: usize = 256;
+const WIDTH: usize = 512;
 const HEIGHT: usize = 100;
 
 fn from_u8_rgb(r: u8, g: u8, b: u8) -> u32 {
@@ -54,20 +54,14 @@ fn main() {
             }
         }
 
-        let mut start_index = 0;
         let mut buffer_phase: [f32; 2 * WIDTH] = [0.; 2 * WIDTH];
 
         for i in 0..2 * WIDTH {
             buffer_phase[i] = rx.recv().unwrap();
-            if i > (0.5 * WIDTH as f32) as usize && i < (1.5 * WIDTH as f32) as usize {
-                if buffer_phase[i] > buffer_phase[i - 1] {
-                    start_index = i;
-                }
-            }
         }
 
         for c in 0..WIDTH {
-            let index = (c as f32 + start_index as f32) - (WIDTH / 2) as f32;
+            let index = (c as f32 + (WIDTH/2) as f32) - (WIDTH / 2) as f32;
             let mut row = HEIGHT
                 - (((buffer_phase[index as usize] + 1.) / 2.) * (HEIGHT - 1) as f32) as usize;
             row = std::cmp::min(row, HEIGHT - 1);

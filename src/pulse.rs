@@ -1,6 +1,6 @@
 use crate::envelope::Envelope;
 use crate::lencounter::Lencounter;
-use crate::sequencer::Sequencer;
+use crate::sequencer::{Sequencer, Sequence};
 use crate::ticker::Ticker;
 use crate::timer::Timer;
 
@@ -16,19 +16,20 @@ pub struct Pulse {
 impl Pulse {
     // TODO: Increase the clock frequency
     pub fn new(frequency: f32, clock: f32) -> Self {
-        let timer_period = (clock / (frequency * 8.)) as u16;
+        let timer_period = (clock / (frequency * 16.)) as u16;
+        let sequence = Sequence::get_triangle_sequence();
         Pulse {
             clock,
             lencounter: Lencounter::new(clock as u32),
             timer: Timer::new(timer_period),
-            sequencer: Sequencer::new(3),
+            sequencer: Sequencer::new(sequence),
             envelope: Envelope::new(clock as u32, true, false),
         }
     }
 
     /// Sets wave frequency
     pub fn set_frequency(&mut self, frequency: f32) {
-        let new_period = (self.clock / (frequency * 8.)) as u16;
+        let new_period = (self.clock / (frequency * 16.)) as u16;
         self.update_timer_period(new_period);
     }
 
