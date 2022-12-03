@@ -1,5 +1,3 @@
-// author: Rob Saunders <hello@robsaunders.io>
-
 #[macro_use]
 extern crate vst;
 
@@ -29,18 +27,16 @@ fn midi_pitch_to_freq(pitch: u8) -> f64 {
 
 struct RetroSynth {
     sample_rate: f64,
-    note: Option<u8>,
     pulse: Pulse,
 }
 
 impl RetroSynth {
-
     fn process_midi_event(&mut self, data: [u8; 3]) {
         match data[0] {
             0x90 => {
                 self.pulse.set_frequency(midi_pitch_to_freq(data[1]) as f32);
                 self.pulse.trigger();
-            },
+            }
             _ => (),
         }
     }
@@ -57,7 +53,6 @@ impl Plugin for RetroSynth {
 
         RetroSynth {
             sample_rate: 44100.0,
-            note: None,
             pulse,
         }
     }
