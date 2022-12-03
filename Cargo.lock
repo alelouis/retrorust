@@ -942,6 +942,7 @@ dependencies = [
  "device_query",
  "midir",
  "minifb",
+ "vst",
 ]
 
 [[package]]
@@ -1207,6 +1208,20 @@ name = "version-compare"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "579a42fc0b8e0c63b76519a339be31bed574929511fa53c1a3acae26eb258f29"
+
+[[package]]
+name = "vst"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "111c58168c9208a20c3f5cedeca0721aee2cac0e92c5ec2a16dc4beb5886a40a"
+dependencies = [
+ "bitflags",
+ "libc",
+ "libloading",
+ "log",
+ "num-traits",
+ "num_enum",
+]
 
 [[package]]
 name = "walkdir"
