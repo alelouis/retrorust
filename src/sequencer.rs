@@ -52,11 +52,6 @@ impl Sequencer {
     }
 
     /// Get sample for given sequence position
-    pub fn get_position(&self) -> usize {
-        self.position
-    }
-
-    /// Get sample for given sequence position
     pub fn get_sample(&self) -> f32 {
         self.sequence.get_samples()[self.position]
     }
