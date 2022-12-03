@@ -3,7 +3,7 @@
 
 Mini retro-vibe monophonic synthesizer.
 
-Generates audio PWM square waves using [NES APU-like](https://www.nesdev.org/wiki/APU) implementation and visualize resulting waveform in real-time.
+Generates audio triangle and square waves at low resolution (like in good old retro times) using [NES APU-like](https://www.nesdev.org/wiki/APU) implementation and visualize resulting waveform in real-time.
 
 ## **Implementation**
 Main components used to generate a Pulse channel are:
