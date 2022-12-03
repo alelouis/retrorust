@@ -33,11 +33,13 @@ impl Sequence {
 
     // Return triangle sequence.
     pub fn get_triangle_sequence() -> Sequence {
-        let mut triangle = [0., 1., 2., 3., 4., 3., 2., 1., 0., -1., -2., -3., -4., -3., -2., -1.];
+        let mut triangle = [
+            0., 1., 2., 3., 4., 3., 2., 1., 0., -1., -2., -3., -4., -3., -2., -1.,
+        ];
         for v in triangle.iter_mut() {
             *v = *v / 4.
         }
-        Sequence { samples : triangle}
+        Sequence { samples: triangle }
     }
 }
 

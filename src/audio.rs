@@ -1,8 +1,8 @@
 use crate::pulse::Pulse;
 use cpal::traits::{DeviceTrait, HostTrait};
 use cpal::{BufferSize, Device, Sample, SampleRate, Stream, StreamConfig};
-use device_query::{DeviceQuery, DeviceState, Keycode};
-use std::sync::mpsc::Sender;
+use device_query::{DeviceState, Keycode};
+use std::sync::mpsc::{Receiver, Sender};
 
 /// Setup default device for audio stream
 fn setup_device() -> Device {
@@ -44,32 +44,41 @@ fn react_on_key(keys: &Vec<Keycode>, pulse: &mut Pulse) {
 }
 
 /// Build stream object
-pub fn stream(mut pulse: Pulse, tx: Sender<f32>) -> Stream {
+pub fn stream(mut pulse: Pulse, tx: Sender<f32>, rx: Receiver<f32>) -> Stream {
     let device = setup_device();
     let config = setup_stream_config();
     let device_state = DeviceState::new();
-    let mut prev_keys = vec![];
+    //let mut prev_keys = vec![];
 
     let stream = device
         .build_output_stream(
             &config,
             move |data: &mut [f32], _: &cpal::OutputCallbackInfo| {
                 // Keys triggering
+                /*
                 let keys = device_state.get_keys();
                 if keys != prev_keys {
                     react_on_key(&keys, &mut pulse)
                 }
                 prev_keys = keys;
+                */
+                rx.try_recv()
+                    .and_then(|frequency| {
+                        Ok({
+                            pulse.set_frequency(frequency);
+                            pulse.trigger();
+                        })
+                    })
+                    .ok();
 
                 // Buffer filling
                 for sample in data.iter_mut() {
                     for _ in 0..16 {
                         pulse.tick();
                     }
-
                     let norm_value = pulse.get_value();
                     tx.send(norm_value).unwrap();
-                    let value: f32 = 0.1 * norm_value;
+                    let value: f32 = 0.5 * norm_value;
                     *sample = Sample::from(&value);
                 }
             },
